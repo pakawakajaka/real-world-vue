@@ -8,10 +8,13 @@ import NotFound from '@/views/NotFound.vue'
 import NetworkError from '@/views/NetworkError.vue'
 import NProgress from 'nprogress'
 import EventService from '@/services/EventService.js'
-import GStore from '@/store'
+import GStore from '@/gstore'
 
 const About = () =>
   import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
+
+const EventCreate = () =>
+  import(/* webpackChunkName: "createEvent" */ '../views/event/EventCreate.vue')
 
 const routes = [
   {
@@ -28,6 +31,11 @@ const routes = [
   {
     path: '/about',
     redirect: { name: 'About' },
+  },
+  {
+    path: '/event/create',
+    name: 'EventCreate',
+    component: EventCreate,
   },
   {
     path: '/events/:id',
