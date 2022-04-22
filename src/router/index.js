@@ -23,8 +23,7 @@ const routes = [
     component: EventList,
     props: (route) => ({ page: parseInt(route.query.page) || 1 }),
     beforeEnter: () => {
-      return store.dispatch('fetchEvents').catch((error) => {
-        console.log(error)
+      return store.dispatch('fetchEvents').catch(() => {
         return { name: 'NetworkError' }
       })
     },
@@ -50,11 +49,7 @@ const routes = [
     component: EventLayout,
     beforeEnter: (to) => {
       return store.dispatch('fetchEvent', to.params.id).catch((error) => {
-        console.log(error)
-        console.log(error.response)
-        console.log(error.response.status)
         if (error.response && error.response.status == 404) {
-          console.log('wtf')
           return {
             name: '404Resource',
             params: { resource: 'event' },
