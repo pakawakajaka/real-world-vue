@@ -15,11 +15,11 @@ describe('App', () => {
   test('Flash Message exists when there is message text', () => {
     GStore.flashMessage = 'howdy'
     const wrapper = mount(App, config)
-    expect(wrapper.find('#flashMessage').exists()).toBe(true)
+    expect(wrapper.find('[data-testid="flashMessage"]').exists()).toBe(true)
   })
   test('Flash Message does not exist when there is no message text', () => {
     GStore.flashMessage = ''
     const wrapper = mount(App, config)
-    expect(wrapper.find('#flashMessage').exists()).toBe(false)
+    expect(wrapper.find('[data-testid="flashMessage"]').exists()).toBe(false)
   })
 })

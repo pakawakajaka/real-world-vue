@@ -67,6 +67,16 @@
     "not ie 11"
   ],
   "jest": {
-    "preset": "@vue/cli-plugin-unit-jest"
+    "preset": "@vue/cli-plugin-unit-jest",
+    "collectCoverage": true,
+    "collectCoverageFrom": [
+      "**/*.{js,vue}",
+      "!**/node_modules/**",
+      "!**/coverage/**",
+      "!**/*rc.js",
+      "!**/*config.js",
+      "!**/src/main.js",
+      "!**/src/gstore/**"
+    ]
   }
 }

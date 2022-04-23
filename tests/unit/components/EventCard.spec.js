@@ -2,14 +2,9 @@ import { mount, RouterLinkStub } from '@vue/test-utils'
 import EventCard from '@/components/EventCard.vue'
 
 const event = {
-  id: 123,
-  category: 'animal welfare',
   title: 'Cat Adoption Day',
-  description: 'Find your new feline friend at this event.',
-  location: 'Meow Town',
   date: 'January 28, 2022',
   time: '12:00',
-  organizer: 'Kat Laydee',
 }
 
 const config = {

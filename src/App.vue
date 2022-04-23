@@ -1,6 +1,10 @@
 <template>
   <nav>
-    <div id="flashMessage" v-if="GStore.flashMessage">
+    <div
+      data-testid="flashMessage"
+      id="flashMessage"
+      v-if="GStore.flashMessage"
+    >
       {{ GStore.flashMessage }}
     </div>
     <router-link :to="{ name: 'EventList' }">Events</router-link> |
