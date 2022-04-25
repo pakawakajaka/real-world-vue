@@ -117,7 +117,7 @@ const router = createRouter({
 router.beforeEach((to, from) => {
   NProgress.start()
 
-  const notAuthorized = true
+  const notAuthorized = false
   if (to.meta.requireAuth && notAuthorized) {
     GStore.flashMessage = 'Sorry, you are not authorized to view this page.'
 

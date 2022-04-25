@@ -10,13 +10,15 @@
     <div class="pagination">
       <router-link
         id="page-prev"
+        data-testid="eventlist-page-prev"
         :to="{ name: 'EventList', query: { page: page - 1 } }"
         rel="prev"
-        v-if="page != 1"
+        v-if="page > 1"
         >&#60; Previous</router-link
       >
       <router-link
         id="page-next"
+        data-testid="eventlist-page-next"
         :to="{ name: 'EventList', query: { page: page + 1 } }"
         rel="next"
         v-if="hasNextPage"
@@ -33,7 +35,12 @@ const eventsPerPage = 3
 
 export default {
   name: 'EventList',
-  props: ['page'],
+  props: {
+    page: {
+      type: Number,
+      required: true,
+    },
+  },
   components: {
     EventCard,
   },
