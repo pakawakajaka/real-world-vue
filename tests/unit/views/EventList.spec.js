@@ -23,7 +23,7 @@ describe('EventList', () => {
       config.global.plugins = [store]
 
       const wrapper = mount(EventList, config)
-      expect(wrapper.find('[data-testid="eventlist-page-next"]').exists()).toBe(
+      expect(wrapper.find('[data-testid="event-list-page-next"]').exists()).toBe(
         true
       )
     })
@@ -37,7 +37,7 @@ describe('EventList', () => {
       config.global.plugins = [store]
 
       const wrapper = mount(EventList, config)
-      expect(wrapper.find('[data-testid="eventlist-page-next"]').exists()).toBe(
+      expect(wrapper.find('[data-testid="event-list-page-next"]').exists()).toBe(
         false
       )
     })
@@ -47,7 +47,7 @@ describe('EventList', () => {
       config.props = { page: 2 }
 
       const wrapper = mount(EventList, config)
-      expect(wrapper.find('[data-testid="eventlist-page-prev"]').exists()).toBe(
+      expect(wrapper.find('[data-testid="event-list-page-prev"]').exists()).toBe(
         true
       )
     })
@@ -56,7 +56,7 @@ describe('EventList', () => {
       config.props = { page: 1 }
 
       const wrapper = mount(EventList, config)
-      expect(wrapper.find('[data-testid="eventlist-page-prev"]').exists()).toBe(
+      expect(wrapper.find('[data-testid="event-list-page-prev"]').exists()).toBe(
         false
       )
     })
