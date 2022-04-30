@@ -1,6 +1,6 @@
 <template>
   <div v-if="this.event">
-    <h1>{{ this.event.title }}</h1>
+    <h1 data-testid="event-layout-title">{{ this.event.title }}</h1>
     <div id="nav">
       <router-link :to="{ name: 'EventDetails' }">Details</router-link>
       |

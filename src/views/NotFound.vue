@@ -8,7 +8,6 @@ export default {
   props: {
     resource: {
       type: String,
-      required: true,
       default: 'page',
     },
   },
