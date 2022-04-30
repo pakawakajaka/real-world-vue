@@ -21,11 +21,10 @@ const config = {
 describe('EventCard', () => {
   test('Event Card is filled with the details of the Event', () => {
     const wrapper = mount(EventCard, config)
+    const wrapperHtml = wrapper.html()
 
-    const eventTitle = wrapper.find('[data-testid="event-card-title"]')
-    expect(eventTitle.text()).toContain(event.title)
-
-    const eventText = wrapper.find('[data-testid="event-card-text"]')
-    expect(eventText.text()).toContain(event.time + ' on ' + event.date)
+    expect(wrapperHtml).toContain(event.title)
+    expect(wrapperHtml).toContain(event.time)
+    expect(wrapperHtml).toContain(event.date)
   })
 })

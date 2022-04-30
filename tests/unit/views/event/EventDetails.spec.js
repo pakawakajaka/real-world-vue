@@ -17,13 +17,11 @@ const config = {
 describe('EventDetails', () => {
   test('EventDetails is filled with the details of the Event', () => {
     const wrapper = mount(EventDetails, config)
+    const wrapperHtml = wrapper.html()
 
-    const eventTitle = wrapper.find('[data-testid="event-details-time-place"]')
-    expect(eventTitle.text()).toContain(
-      event.time + ' on ' + event.date + ' @ ' + event.location
-    )
-
-    const eventText = wrapper.find('[data-testid="event-details-description"]')
-    expect(eventText.text()).toContain(event.description)
+    expect(wrapperHtml).toContain(event.location)
+    expect(wrapperHtml).toContain(event.time)
+    expect(wrapperHtml).toContain(event.date)
+    expect(wrapperHtml).toContain(event.description)
   })
 })
