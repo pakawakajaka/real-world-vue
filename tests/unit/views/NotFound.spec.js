@@ -9,7 +9,7 @@ const config = {
   },
 }
 
-afterEach(() => {
+beforeEach(() => {
   config.props = null
 })
 
