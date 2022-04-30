@@ -7,11 +7,14 @@ import EventEdit from '@/views/event/EventEdit.vue'
 import NotFound from '@/views/NotFound.vue'
 import NetworkError from '@/views/NetworkError.vue'
 import NProgress from 'nprogress'
-import EventService from '@/services/EventService.js'
-import GStore from '@/store'
+import GStore from '@/gstore'
+import store from '@/store'
 
 const About = () =>
   import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
+
+const EventCreate = () =>
+  import(/* webpackChunkName: "createEvent" */ '../views/event/EventCreate.vue')
 
 const routes = [
   {
@@ -19,6 +22,11 @@ const routes = [
     name: 'EventList',
     component: EventList,
     props: (route) => ({ page: parseInt(route.query.page) || 1 }),
+    beforeEnter: () => {
+      return store.dispatch('fetchEvents').catch(() => {
+        return { name: 'NetworkError' }
+      })
+    },
   },
   {
     path: '/about-us',
@@ -30,26 +38,26 @@ const routes = [
     redirect: { name: 'About' },
   },
   {
+    path: '/event/create',
+    name: 'EventCreate',
+    component: EventCreate,
+  },
+  {
     path: '/events/:id',
     name: 'EventLayout',
     props: true,
     component: EventLayout,
     beforeEnter: (to) => {
-      return EventService.getEvent(to.params.id)
-        .then((response) => {
-          GStore.event = response.data
-        })
-        .catch((error) => {
-          console.log(error)
-          if (error.response && error.response.status == 404) {
-            return {
-              name: '404Resource',
-              params: { resource: 'event' },
-            }
-          } else {
-            return { name: 'NetworkError' }
+      return store.dispatch('fetchEvent', to.params.id).catch((error) => {
+        if (error.response && error.response.status == 404) {
+          return {
+            name: '404Resource',
+            params: { resource: 'event' },
           }
-        })
+        } else {
+          return { name: 'NetworkError' }
+        }
+      })
     },
     children: [
       {

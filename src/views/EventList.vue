@@ -1,7 +1,11 @@
 <template>
   <h1>Events For Good</h1>
   <div class="events">
-    <EventCard v-for="event in events" :key="event.id" :event="event" />
+    <EventCard
+      v-for="event in this.events.slice(firstIndex, lastIndex)"
+      :key="event.id"
+      :event="event"
+    />
 
     <div class="pagination">
       <router-link
@@ -24,9 +28,8 @@
 
 <script>
 import EventCard from '@/components/EventCard.vue'
-import EventService from '@/services/EventService.js'
 
-const eventsPerPage = 5
+const eventsPerPage = 3
 
 export default {
   name: 'EventList',
@@ -34,42 +37,19 @@ export default {
   components: {
     EventCard,
   },
-  data() {
-    return {
-      events: null,
-      totalEvents: 0,
-    }
-  },
-  beforeRouteEnter(routeTo, routeFrom, next) {
-    EventService.getEvents(eventsPerPage, parseInt(routeTo.query.page) || 1)
-      .then((response) => {
-        next((comp) => {
-          comp.events = response.data
-          comp.totalEvents = response.headers['x-total-count']
-        })
-      })
-      .catch(() => {
-        next({ name: 'NetworkError' })
-      })
-  },
-  beforeRouteUpdate(routeTo) {
-    return EventService.getEvents(
-      eventsPerPage,
-      parseInt(routeTo.query.page) || 1
-    )
-      .then((response) => {
-        this.events = response.data
-        this.totalEvents = response.headers['x-total-count']
-      })
-      .catch(() => {
-        return { name: 'NetworkError' }
-      })
-  },
   computed: {
+    events() {
+      return this.$store.state.events
+    },
     hasNextPage() {
-      var totalPages = Math.ceil(this.totalEvents / eventsPerPage)
-
+      var totalPages = Math.ceil(this.events.length / eventsPerPage)
       return this.page < totalPages
+    },
+    firstIndex() {
+      return (this.page - 1) * eventsPerPage
+    },
+    lastIndex() {
+      return this.page * eventsPerPage
     },
   },
 }
