@@ -3,7 +3,7 @@
     <div
       data-testid="flashMessage"
       id="flashMessage"
-      v-if="flashMessageStore.message"
+      v-if="flashMessageStore.message != ''"
     >
       {{ flashMessageStore.message }}
     </div>

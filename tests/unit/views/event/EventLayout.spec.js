@@ -1,38 +1,42 @@
 import { mount } from '@vue/test-utils'
 import EventLayout from '@/views/event/EventLayout.vue'
-import { createStore } from 'vuex'
+import { createTestingPinia } from '@pinia/testing'
+import { useEventStore } from '@/stores/EventStore'
 
 function mountEventLayout(event) {
-    const store = createStore({
-      state() {
-        return { event }
-      },
-    })
-    const config = {
-      global: {
-        plugins: [store],
-        stubs: ['router-link', 'router-view'],
-      }
-    }
-    return mount(EventLayout, config)
+  const config = {
+    global: {
+      plugins: [createTestingPinia()],
+      stubs: ['router-link', 'router-view'],
+    },
   }
+  const wrapper = mount(EventLayout, config)
+  const store = useEventStore()
+  store.event = event
+  return { wrapper, store }
+}
 
 describe('EventLayout', () => {
-    test('Event is displayed if it exists', () => {
-        event = {
-            title: 'Cat Adoption Day'
-        }
+  test('Event is displayed if it has an id', async () => {
+    const event = {
+      id: 1,
+      title: 'Cat Adoption Day',
+    }
+    const { wrapper, store } = mountEventLayout(event)
+    await store.fetchEvent(event.id)
+    const eventTitle = wrapper.find('[data-testid="event-layout-title"]')
 
-        const wrapper = mountEventLayout(event)
-        const eventTitle = wrapper.find('[data-testid="event-layout-title"]')
-        expect(eventTitle.text()).toContain(event.title)
-    })
+    expect(store.fetchEvent).toHaveBeenCalledTimes(1)
+    expect(eventTitle.text()).toContain(event.title)
+  })
 
-    test('Event is not displayed if it does not exist', () => {
-        event = null
-        
-        const wrapper = mountEventLayout(event)
-        const eventTitle = wrapper.find('[data-testid="event-layout-title"]')
-        expect(eventTitle.exists()).toBe(false)
-    })
+  test('Event is not displayed if it does not have an id', async () => {
+    const event = {}
+    const { wrapper, store } = mountEventLayout(event)
+    await store.fetchEvent(event.id)
+    const eventTitle = wrapper.find('[data-testid="event-layout-title"]')
+
+    expect(store.fetchEvent).toHaveBeenCalledTimes(1)
+    expect(eventTitle.exists()).toBe(false)
+  })
 })
