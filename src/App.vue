@@ -3,20 +3,28 @@
     <div
       data-testid="flashMessage"
       id="flashMessage"
-      v-if="GStore.flashMessage"
+      v-if="flashMessageStore.message"
     >
-      {{ GStore.flashMessage }}
+      {{ flashMessageStore.message }}
     </div>
     <router-link :to="{ name: 'EventList' }">Events</router-link> |
     <router-link :to="{ name: 'EventCreate' }">Create Event</router-link> |
     <router-link :to="{ name: 'About' }">About</router-link>
+    <p>Logged in as {{ userStore.name }}</p>
   </nav>
   <router-view />
 </template>
 
 <script>
+import { useUserStore } from '@/stores/UserStore'
+import { useFlashMessageStore } from '@/stores/FlashMessageStore'
+
 export default {
-  inject: ['GStore'],
+  setup() {
+    const userStore = useUserStore()
+    const flashMessageStore = useFlashMessageStore()
+    return { userStore, flashMessageStore }
+  },
 }
 </script>
 <style>

@@ -13,10 +13,16 @@
 </template>
 
 <script>
+import { useEventStore } from '@/stores/EventStore'
+
 export default {
+  setup() {
+    const eventStore = useEventStore()
+    return { eventStore }
+  },
   computed: {
     event() {
-      return this.$store.state.event
+      return this.eventStore.event
     },
   },
 }

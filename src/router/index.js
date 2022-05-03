@@ -7,8 +7,8 @@ import EventEdit from '@/views/event/EventEdit.vue'
 import NotFound from '@/views/NotFound.vue'
 import NetworkError from '@/views/NetworkError.vue'
 import NProgress from 'nprogress'
-import GStore from '@/gstore'
-import store from '@/store'
+import { useEventStore } from '@/stores/EventStore'
+import { useFlashMessageStore } from '@/stores/FlashMessageStore'
 
 const About = () =>
   import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
@@ -23,7 +23,8 @@ const routes = [
     component: EventList,
     props: (route) => ({ page: parseInt(route.query.page) || 1 }),
     beforeEnter: () => {
-      return store.dispatch('fetchEvents').catch(() => {
+      const eventStore = useEventStore()
+      return eventStore.fetchEvents().catch(() => {
         return { name: 'NetworkError' }
       })
     },
@@ -48,7 +49,8 @@ const routes = [
     props: true,
     component: EventLayout,
     beforeEnter: (to) => {
-      return store.dispatch('fetchEvent', to.params.id).catch((error) => {
+      const eventStore = useEventStore()
+      return eventStore.fetchEvent(to.params.id).catch((error) => {
         if (error.response && error.response.status == 404) {
           return {
             name: '404Resource',
@@ -116,13 +118,14 @@ const router = createRouter({
 
 router.beforeEach((to, from) => {
   NProgress.start()
-
+  const flashMessageStore = useFlashMessageStore()
   const notAuthorized = false
   if (to.meta.requireAuth && notAuthorized) {
-    GStore.flashMessage = 'Sorry, you are not authorized to view this page.'
+    flashMessageStore.message =
+      'Sorry, you are not authorized to view this page.'
 
     setTimeout(() => {
-      GStore.flashMessage = ''
+      flashMessageStore.message = ''
     }, 3000)
 
     if (from.href) {

@@ -4,18 +4,23 @@
 </template>
 
 <script>
+import { useFlashMessageStore } from '@/stores/FlashMessageStore'
+
 export default {
   props: ['event'],
-  inject: ['GStore'],
+  setup() {
+    const flashMessageStore = useFlashMessageStore()
+    return { flashMessageStore }
+  },
   methods: {
     register() {
       // Call to API
       // If registered the nredirect to event details
-      this.GStore.flashMessage =
+      this.flashMessageStore.message =
         'You are successfully registered for ' + this.event.title
 
       setTimeout(() => {
-        this.GStore.flashMessage = ''
+        this.flashMessageStore.message = ''
       }, 3000)
       this.$router.push({
         name: 'EventDetails',

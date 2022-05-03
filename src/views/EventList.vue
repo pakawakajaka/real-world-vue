@@ -1,5 +1,5 @@
 <template>
-  <h1>Events For Good</h1>
+  <h1>{{ eventStore.numberOfEvents }} Events For Good</h1>
   <div class="events">
     <EventCard
       v-for="event in this.events.slice(firstIndex, lastIndex)"
@@ -30,6 +30,7 @@
 
 <script>
 import EventCard from '@/components/EventCard.vue'
+import { useEventStore } from '@/stores/EventStore'
 
 const eventsPerPage = 3
 
@@ -44,9 +45,13 @@ export default {
   components: {
     EventCard,
   },
+  setup() {
+    const eventStore = useEventStore()
+    return { eventStore }
+  },
   computed: {
     events() {
-      return this.$store.state.events
+      return this.eventStore.events
     },
     hasNextPage() {
       var totalPages = Math.ceil(this.events.length / eventsPerPage)
