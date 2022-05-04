@@ -78,6 +78,7 @@
       "!**/*rc.js",
       "!**/*config.js",
       "!**/src/main.js"
-    ]
+    ],
+    "coverageProvider": "v8"
   }
 }
